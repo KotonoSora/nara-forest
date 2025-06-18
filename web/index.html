@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodoro Forest - Focus & Productivity Timer</title>
+    <meta
+      name="description"
+      content="A beautiful and powerful Pomodoro timer to boost your productivity with nature-inspired design"
+    />
+    <meta name="theme-color" content="#2d5a27" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="icon" type="image/svg+xml" href="/forest-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Import map must come before modulepreload and module scripts -->
+    <script type="importmap">
+      {
+        "imports": {
+          "/pomodoro.js": "/pomodoro.js"
+        }
+      }
+    </script>
+    <!-- Preload WebAssembly module for faster loading -->
+    <link rel="modulepreload" href="/pomodoro.js" />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-content">
+        <div class="loading-icon">🌲</div>
+        <div class="loading-text">Loading Pomodoro Forest...</div>
+        <div class="loading-bar">
+          <div class="loading-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="error-screen" class="error-screen hidden">
+      <div class="error-content">
+        <div class="error-icon">⚠️</div>
+        <div class="error-title">Failed to Load Application</div>
+        <div class="error-message" id="error-message">
+          Unable to load the WebAssembly module. Please check your browser
+          compatibility and try refreshing the page.
+        </div>
+        <button class="retry-btn" onclick="location.reload()">
+          Retry Loading
+        </button>
+      </div>
+    </div>
+
+    <div id="app" class="app hidden">
+      <header class="app-header">
+        <div class="header-left">
+          <h1 class="app-title">
+            <span class="forest-icon">🌲</span>
+            Pomodoro Forest
+          </h1>
+        </div>
+        <nav class="header-nav">
+          <button class="nav-btn active" data-view="timer">
+            <span class="nav-icon">⏱️</span>
+            Timer
+          </button>
+          <button class="nav-btn" data-view="tasks">
+            <span class="nav-icon">📝</span>
+            Tasks
+          </button>
+          <button class="nav-btn" data-view="statistics">
+            <span class="nav-icon">📊</span>
+            Stats
+          </button>
+          <button class="nav-btn" data-view="settings">
+            <span class="nav-icon">⚙️</span>
+            Settings
+          </button>
+        </nav>
+        <div class="header-right">
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            title="Toggle Dark Mode"
+          >
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <!-- Timer View -->
+        <section id="timer-view" class="view active">
+          <div class="timer-container">
+            <div class="timer-circle">
+              <svg class="progress-ring" width="320" height="320">
+                <circle class="progress-background" cx="160" cy="160" r="140" />
+                <circle class="progress-bar" cx="160" cy="160" r="140" />
+              </svg>
+              <div class="timer-content">
+                <div class="session-type">Work Session</div>
+                <div class="timer-display">25:00</div>
+                <div class="session-count">Session 1</div>
+              </div>
+            </div>
+
+            <div class="timer-controls">
+              <button id="start-btn" class="control-btn primary">
+                <span class="btn-icon">▶️</span>
+                Start
+              </button>
+              <button id="pause-btn" class="control-btn secondary hidden">
+                <span class="btn-icon">⏸️</span>
+                Pause
+              </button>
+              <button id="stop-btn" class="control-btn danger">
+                <span class="btn-icon">⏹️</span>
+                Stop
+              </button>
+              <button id="skip-btn" class="control-btn tertiary">
+                <span class="btn-icon">⏭️</span>
+                Skip
+              </button>
+              <button id="reset-btn" class="control-btn secondary">
+                <span class="btn-icon">🔄</span>
+                Reset
+              </button>
+            </div>
+
+            <div class="current-task">
+              <div class="task-label">Current Task:</div>
+              <div class="task-display" id="current-task-display">
+                <span class="no-task">No task selected</span>
+              </div>
+              <button id="select-task-btn" class="select-task-btn">
+                Select Task
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tasks View -->
+        <section id="tasks-view" class="view">
+          <div class="tasks-container">
+            <div class="tasks-header">
+              <h2>Tasks</h2>
+              <button id="add-task-btn" class="add-task-btn">
+                <span class="btn-icon">➕</span>
+                Add Task
+              </button>
+            </div>
+
+            <div class="tasks-tabs">
+              <button class="tab-btn active" data-tab="active">Active</button>
+              <button class="tab-btn" data-tab="completed">Completed</button>
+            </div>
+
+            <div class="tasks-list" id="tasks-list">
+              <!-- Tasks will be populated by JavaScript -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Statistics View -->
+        <section id="statistics-view" class="view">
+          <div class="stats-container">
+            <h2>Statistics</h2>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">🍅</div>
+                <div class="stat-value" id="total-pomodoros">0</div>
+                <div class="stat-label">Total Pomodoros</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-value" id="today-pomodoros">0</div>
+                <div class="stat-label">Today</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">📆</div>
+                <div class="stat-value" id="week-pomodoros">0</div>
+                <div class="stat-label">This Week</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">⏰</div>
+                <div class="stat-value" id="total-work-time">0h 0m</div>
+                <div class="stat-label">Work Time</div>
+              </div>
+            </div>
+
+            <div class="charts-container">
+              <div class="chart-card">
+                <h3>Weekly Progress</h3>
+                <div class="chart" id="weekly-chart">
+                  <!-- Chart will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings View -->
+        <section id="settings-view" class="view">
+          <div class="settings-container">
+            <h2>Settings</h2>
+
+            <div class="settings-group">
+              <h3>Timer Settings</h3>
+
+              <div class="setting-item">
+                <label for="work-duration">Work Duration (minutes)</label>
+                <input
+                  type="number"
+                  id="work-duration"
+                  min="1"
+                  max="60"
+                  value="25"
+                />
+              </div>
+
+              <div class="setting-item">
+                <label for="short-break-duration">Short Break (minutes)</label>
+                <input
+                  type="number"
+                  id="short-break-duration"
+                  min="1"
+                  max="30"
+                  value="5"
+                />
+              </div>
+
+              <div class="setting-item">
+                <label for="long-break-duration">Long Break (minutes)</label>
+                <input
+                  type="number"
+                  id="long-break-duration"
+                  min="1"
+                  max="60"
+                  value="15"
+                />
+              </div>
+
+              <div class="setting-item">
+                <label for="long-break-interval">Long Break Interval</label>
+                <input
+                  type="number"
+                  id="long-break-interval"
+                  min="2"
+                  max="10"
+                  value="4"
+                />
+              </div>
+            </div>
+
+            <div class="settings-group">
+              <h3>Notifications</h3>
+
+              <div class="setting-item">
+                <label class="switch">
+                  <input type="checkbox" id="sound-enabled" checked />
+                  <span class="slider"></span>
+                  Sound Notifications
+                </label>
+              </div>
+
+              <div class="setting-item">
+                <label class="switch">
+                  <input type="checkbox" id="notifications-enabled" checked />
+                  <span class="slider"></span>
+                  System Notifications
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-group">
+              <h3>Automation</h3>
+
+              <div class="setting-item">
+                <label class="switch">
+                  <input type="checkbox" id="auto-start-breaks" />
+                  <span class="slider"></span>
+                  Auto-start Breaks
+                </label>
+              </div>
+
+              <div class="setting-item">
+                <label class="switch">
+                  <input type="checkbox" id="auto-start-pomodoros" />
+                  <span class="slider"></span>
+                  Auto-start Work Sessions
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-actions">
+              <button id="save-settings-btn" class="save-btn">
+                Save Settings
+              </button>
+              <button id="reset-settings-btn" class="reset-btn">
+                Reset to Defaults
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">Add New Task</h3>
+          <button class="modal-close" id="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="task-title">Task Title</label>
+            <input
+              type="text"
+              id="task-title"
+              placeholder="Enter task title"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="task-description">Description (optional)</label>
+            <textarea
+              id="task-description"
+              placeholder="Enter task description"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="estimated-pomodoros">Estimated Pomodoros</label>
+            <input
+              type="number"
+              id="estimated-pomodoros"
+              min="1"
+              max="20"
+              value="1"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-task-btn" class="cancel-btn">Cancel</button>
+          <button id="save-task-btn" class="save-btn">Save Task</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Selection Modal -->
+    <div id="task-selection-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Select Current Task</h3>
+          <button class="modal-close" id="task-selection-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="task-selection-list" id="task-selection-list">
+            <!-- Tasks will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load WebAssembly module and create global loader -->
+    <script>
+      // Global function to load the Pomodoro WebAssembly Module
+      window.loadPomodoroModule = async function () {
+        try {
+          console.log("Loading Pomodoro WebAssembly module...");
+          const { default: createPomodoroModule } = await import(
+            "/pomodoro.js"
+          );
+          console.log("Creating module instance...");
+          const module = await createPomodoroModule();
+          console.log("WebAssembly module loaded successfully");
+          return module;
+        } catch (error) {
+          console.error("Failed to load WebAssembly module:", error);
+          throw error;
+        }
+      };
+    </script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
