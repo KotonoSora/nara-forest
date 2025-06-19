@@ -11,8 +11,10 @@ CXXFLAGS = -std=c++17 -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_ES6=1 \
            "_getWorkDuration", "_getShortBreakDuration", "_getLongBreakDuration", \
            "_getLongBreakInterval", "_getSoundEnabled", "_getNotificationsEnabled", \
            "_getAutoStartBreaks", "_getAutoStartPomodoros", "_addTask", "_removeTask", \
-           "_completeTask", "_setCurrentTask", "_getCurrentTaskId", "_getTotalPomodoros", \
-           "_getTodayPomodoros", "_getWeekPomodoros", "_getMonthPomodoros", \
+           "_completeTask", "_updateTask", "_setCurrentTask", "_getCurrentTaskId", \
+           "_getTaskCount", "_getTaskTitle", "_getTaskDescription", "_getTaskEstimatedPomodoros", \
+           "_getTaskCompletedPomodoros", "_isTaskCompleted", "_getTaskIdByIndex", \
+           "_getTotalPomodoros", "_getTodayPomodoros", "_getWeekPomodoros", "_getMonthPomodoros", \
            "_getTotalWorkTime", "_getTotalBreakTime", "_update", "_saveState", "_loadState"]'
 
 SRCDIR = .

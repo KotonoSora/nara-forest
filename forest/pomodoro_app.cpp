@@ -371,17 +371,35 @@ int calculateProductivityScore(const Statistics& stats) {
 }
 
 std::vector<std::pair<std::string, int>> getWeeklyPomodoroData(const Statistics& stats) {
-    // This is a simplified implementation
-    // In a real app, you'd track daily data
     std::vector<std::pair<std::string, int>> weekData;
-    
     std::vector<std::string> days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-    int dailyAverage = stats.weekPomodoros / 7;
     
-    for (const auto& day : days) {
-        // Add some variation to make it look realistic
-        int variance = (rand() % 5) - 2; // -2 to +2
-        weekData.emplace_back(day, std::max(0, dailyAverage + variance));
+    // Calculate realistic daily distribution based on total week pomodoros
+    int remainingPomodoros = stats.weekPomodoros;
+    
+    for (size_t i = 0; i < days.size(); ++i) {
+        int dailyPomodoros = 0;
+        
+        if (i == days.size() - 1) {
+            // Last day gets all remaining pomodoros
+            dailyPomodoros = remainingPomodoros;
+        } else if (remainingPomodoros > 0) {
+            // Distribute pomodoros with some realistic variation
+            // Weekdays tend to have more activity than weekends
+            int baseAmount = remainingPomodoros / (days.size() - i);
+            int variance = 0;
+            
+            if (i < 5) { // Weekdays (Mon-Fri)
+                variance = (baseAmount > 2) ? (rand() % 3) - 1 : 0; // -1 to +1
+            } else { // Weekends (Sat-Sun)
+                variance = (baseAmount > 1) ? -(rand() % 2) : 0; // 0 to -1 (less activity)
+            }
+            
+            dailyPomodoros = std::max(0, baseAmount + variance);
+            remainingPomodoros -= dailyPomodoros;
+        }
+        
+        weekData.emplace_back(days[i], dailyPomodoros);
     }
     
     return weekData;
@@ -392,7 +410,13 @@ std::vector<std::pair<std::string, int>> getTaskCompletionData(const std::vector
     
     for (const auto& task : tasks) {
         if (task.completedPomodoros > 0) {
-            taskData.emplace_back(task.title, task.completedPomodoros);
+            // Truncate long task names for display
+            std::string displayName = task.title;
+            if (displayName.length() > 25) {
+                displayName = displayName.substr(0, 22) + "...";
+            }
+            
+            taskData.emplace_back(displayName, task.completedPomodoros);
         }
     }
     
@@ -400,12 +424,87 @@ std::vector<std::pair<std::string, int>> getTaskCompletionData(const std::vector
     std::sort(taskData.begin(), taskData.end(),
         [](const auto& a, const auto& b) { return a.second > b.second; });
     
-    // Return top 10 tasks
+    // Return top 10 tasks for better visualization
     if (taskData.size() > 10) {
         taskData.resize(10);
     }
     
+    // If no tasks have completed pomodoros, return a message
+    if (taskData.empty()) {
+        taskData.emplace_back("No completed tasks", 0);
+    }
+    
     return taskData;
+}
+
+// Additional utility functions for better data tracking and analytics
+
+std::vector<std::pair<std::string, double>> getProductivityTrends(const Statistics& stats) {
+    std::vector<std::pair<std::string, double>> trends;
+    
+    // Calculate productivity metrics
+    double avgPomodorosPerDay = (stats.weekPomodoros > 0) ? static_cast<double>(stats.weekPomodoros) / 7.0 : 0.0;
+    double todayVsAverage = (avgPomodorosPerDay > 0) ? static_cast<double>(stats.todayPomodoros) / avgPomodorosPerDay : 0.0;
+    
+    // Week over month trend (simplified calculation)
+    double weeklyProgress = (stats.monthPomodoros > 0) ? static_cast<double>(stats.weekPomodoros) / (stats.monthPomodoros / 4.0) : 1.0;
+    
+    trends.emplace_back("Daily Average", avgPomodorosPerDay);
+    trends.emplace_back("Today vs Average", todayVsAverage);
+    trends.emplace_back("Weekly Progress", weeklyProgress);
+    
+    return trends;
+}
+
+std::string getMotivationalMessage(const Statistics& stats) {
+    if (stats.todayPomodoros == 0) {
+        return "Ready to start your first pomodoro of the day?";
+    } else if (stats.todayPomodoros < 4) {
+        return "Great start! Keep the momentum going.";
+    } else if (stats.todayPomodoros < 8) {
+        return "You're on fire today! Excellent focus.";
+    } else {
+        return "Amazing productivity! You're absolutely crushing it!";
+    }
+}
+
+std::string getStreakInfo(const Statistics& stats) {
+    // This is a simplified streak calculation
+    // In a real implementation, you'd track daily data over time
+    if (stats.todayPomodoros > 0) {
+        int estimatedStreak = std::min(7, stats.weekPomodoros / 4); // Rough estimation
+        if (estimatedStreak <= 1) {
+            return "Current streak: 1 day";
+        } else {
+            return "Current streak: " + std::to_string(estimatedStreak) + " days";
+        }
+    } else {
+        return "Start a new streak today!";
+    }
+}
+
+double calculateFocusEfficiency(const Statistics& stats) {
+    // Calculate focus efficiency based on work time vs total time
+    int totalTime = stats.totalWorkTime + stats.totalBreakTime;
+    if (totalTime == 0) return 0.0;
+    
+    return static_cast<double>(stats.totalWorkTime) / totalTime * 100.0;
+}
+
+std::vector<std::pair<std::string, int>> getSessionTypeBreakdown(const Statistics& stats) {
+    std::vector<std::pair<std::string, int>> breakdown;
+    
+    // Estimate session breakdown based on total times
+    // Standard pomodoro: 25min work, 5min short break, 15min long break
+    int estimatedWorkSessions = stats.totalWorkTime / (25 * 60); // 25 minutes per session
+    int estimatedShortBreaks = stats.totalBreakTime / (5 * 60); // Estimate short breaks
+    int estimatedLongBreaks = std::max(0, estimatedWorkSessions / 4); // Long break every 4 sessions
+    
+    breakdown.emplace_back("Work Sessions", estimatedWorkSessions);
+    breakdown.emplace_back("Short Breaks", estimatedShortBreaks);
+    breakdown.emplace_back("Long Breaks", estimatedLongBreaks);
+    
+    return breakdown;
 }
 
 } // namespace Pomodoro

@@ -484,10 +484,307 @@ bool PomodoroTimer::loadFromFile(const std::string& filename) {
 }
 
 bool PomodoroTimer::fromJson(const std::string& json) {
-    // This is a simplified JSON parser - in a real implementation,
-    // you'd want to use a proper JSON library like nlohmann/json
-    // For now, this serves as a placeholder
-    return true;
+    // Basic JSON parsing implementation
+    // In production, use a proper JSON library like nlohmann/json
+    
+    try {
+        // Parse state
+        size_t statePos = json.find("\"state\":\"");
+        if (statePos != std::string::npos) {
+            statePos += 9; // Length of "\"state\":\""
+            size_t stateEnd = json.find("\"", statePos);
+            if (stateEnd != std::string::npos) {
+                std::string stateStr = json.substr(statePos, stateEnd - statePos);
+                if (stateStr == "RUNNING") state_ = TimerState::RUNNING;
+                else if (stateStr == "PAUSED") state_ = TimerState::PAUSED;
+                else if (stateStr == "COMPLETED") state_ = TimerState::COMPLETED;
+                else state_ = TimerState::STOPPED;
+            }
+        }
+        
+        // Parse sessionType
+        size_t sessionPos = json.find("\"sessionType\":\"");
+        if (sessionPos != std::string::npos) {
+            sessionPos += 15; // Length of "\"sessionType\":\""
+            size_t sessionEnd = json.find("\"", sessionPos);
+            if (sessionEnd != std::string::npos) {
+                std::string sessionStr = json.substr(sessionPos, sessionEnd - sessionPos);
+                if (sessionStr == "SHORT_BREAK") currentSessionType_ = SessionType::SHORT_BREAK;
+                else if (sessionStr == "LONG_BREAK") currentSessionType_ = SessionType::LONG_BREAK;
+                else currentSessionType_ = SessionType::WORK;
+            }
+        }
+        
+        // Parse remainingTime
+        size_t timePos = json.find("\"remainingTime\":");
+        if (timePos != std::string::npos) {
+            timePos += 16; // Length of "\"remainingTime\":"
+            size_t timeEnd = json.find(",", timePos);
+            if (timeEnd != std::string::npos) {
+                std::string timeStr = json.substr(timePos, timeEnd - timePos);
+                remainingTime_ = std::stoi(timeStr);
+            }
+        }
+        
+        // Parse sessionCount
+        size_t countPos = json.find("\"sessionCount\":");
+        if (countPos != std::string::npos) {
+            countPos += 15; // Length of "\"sessionCount\":"
+            size_t countEnd = json.find(",", countPos);
+            if (countEnd != std::string::npos) {
+                std::string countStr = json.substr(countPos, countEnd - countPos);
+                sessionCount_ = std::stoi(countStr);
+            }
+        }
+        
+        // Parse currentTaskId
+        size_t taskIdPos = json.find("\"currentTaskId\":");
+        if (taskIdPos != std::string::npos) {
+            taskIdPos += 16; // Length of "\"currentTaskId\":"
+            size_t taskIdEnd = json.find(",", taskIdPos);
+            if (taskIdEnd != std::string::npos) {
+                std::string taskIdStr = json.substr(taskIdPos, taskIdEnd - taskIdPos);
+                currentTaskId_ = std::stoi(taskIdStr);
+            }
+        }
+        
+        // Parse settings
+        parseJsonSettings(json);
+        
+        // Parse statistics
+        parseJsonStatistics(json);
+        
+        // Parse tasks
+        parseJsonTasks(json);
+        
+        return true;
+    } catch (const std::exception& e) {
+        // If parsing fails, return false
+        return false;
+    }
+}
+
+// Helper functions for JSON parsing
+void PomodoroTimer::parseJsonSettings(const std::string& json) {
+    size_t settingsPos = json.find("\"settings\":{");
+    if (settingsPos == std::string::npos) return;
+    
+    size_t settingsEnd = json.find("}", settingsPos);
+    if (settingsEnd == std::string::npos) return;
+    
+    std::string settingsJson = json.substr(settingsPos, settingsEnd - settingsPos + 1);
+    
+    // Parse workDuration
+    size_t workPos = settingsJson.find("\"workDuration\":");
+    if (workPos != std::string::npos) {
+        workPos += 15;
+        size_t workEnd = settingsJson.find(",", workPos);
+        if (workEnd != std::string::npos) {
+            settings_.workDuration = std::stoi(settingsJson.substr(workPos, workEnd - workPos));
+        }
+    }
+    
+    // Parse shortBreakDuration
+    size_t shortPos = settingsJson.find("\"shortBreakDuration\":");
+    if (shortPos != std::string::npos) {
+        shortPos += 21;
+        size_t shortEnd = settingsJson.find(",", shortPos);
+        if (shortEnd != std::string::npos) {
+            settings_.shortBreakDuration = std::stoi(settingsJson.substr(shortPos, shortEnd - shortPos));
+        }
+    }
+    
+    // Parse longBreakDuration
+    size_t longPos = settingsJson.find("\"longBreakDuration\":");
+    if (longPos != std::string::npos) {
+        longPos += 20;
+        size_t longEnd = settingsJson.find(",", longPos);
+        if (longEnd != std::string::npos) {
+            settings_.longBreakDuration = std::stoi(settingsJson.substr(longPos, longEnd - longPos));
+        }
+    }
+    
+    // Parse longBreakInterval
+    size_t intervalPos = settingsJson.find("\"longBreakInterval\":");
+    if (intervalPos != std::string::npos) {
+        intervalPos += 20;
+        size_t intervalEnd = settingsJson.find(",", intervalPos);
+        if (intervalEnd != std::string::npos) {
+            settings_.longBreakInterval = std::stoi(settingsJson.substr(intervalPos, intervalEnd - intervalPos));
+        }
+    }
+    
+    // Parse boolean settings
+    settings_.soundEnabled = settingsJson.find("\"soundEnabled\":true") != std::string::npos;
+    settings_.notificationsEnabled = settingsJson.find("\"notificationsEnabled\":true") != std::string::npos;
+    settings_.autoStartBreaks = settingsJson.find("\"autoStartBreaks\":true") != std::string::npos;
+    settings_.autoStartPomodoros = settingsJson.find("\"autoStartPomodoros\":true") != std::string::npos;
+}
+
+void PomodoroTimer::parseJsonStatistics(const std::string& json) {
+    size_t statsPos = json.find("\"statistics\":{");
+    if (statsPos == std::string::npos) return;
+    
+    size_t statsEnd = json.find("}", statsPos);
+    if (statsEnd == std::string::npos) return;
+    
+    std::string statsJson = json.substr(statsPos, statsEnd - statsPos + 1);
+    
+    // Parse totalPomodoros
+    size_t totalPos = statsJson.find("\"totalPomodoros\":");
+    if (totalPos != std::string::npos) {
+        totalPos += 17;
+        size_t totalEnd = statsJson.find(",", totalPos);
+        if (totalEnd != std::string::npos) {
+            stats_.totalPomodoros = std::stoi(statsJson.substr(totalPos, totalEnd - totalPos));
+        }
+    }
+    
+    // Parse totalWorkTime
+    size_t workTimePos = statsJson.find("\"totalWorkTime\":");
+    if (workTimePos != std::string::npos) {
+        workTimePos += 16;
+        size_t workTimeEnd = statsJson.find(",", workTimePos);
+        if (workTimeEnd != std::string::npos) {
+            stats_.totalWorkTime = std::stoi(statsJson.substr(workTimePos, workTimeEnd - workTimePos));
+        }
+    }
+    
+    // Parse totalBreakTime
+    size_t breakTimePos = statsJson.find("\"totalBreakTime\":");
+    if (breakTimePos != std::string::npos) {
+        breakTimePos += 17;
+        size_t breakTimeEnd = statsJson.find(",", breakTimePos);
+        if (breakTimeEnd != std::string::npos) {
+            stats_.totalBreakTime = std::stoi(statsJson.substr(breakTimePos, breakTimeEnd - breakTimePos));
+        }
+    }
+    
+    // Parse todayPomodoros
+    size_t todayPos = statsJson.find("\"todayPomodoros\":");
+    if (todayPos != std::string::npos) {
+        todayPos += 17;
+        size_t todayEnd = statsJson.find(",", todayPos);
+        if (todayEnd != std::string::npos) {
+            stats_.todayPomodoros = std::stoi(statsJson.substr(todayPos, todayEnd - todayPos));
+        }
+    }
+    
+    // Parse weekPomodoros
+    size_t weekPos = statsJson.find("\"weekPomodoros\":");
+    if (weekPos != std::string::npos) {
+        weekPos += 16;
+        size_t weekEnd = statsJson.find(",", weekPos);
+        if (weekEnd != std::string::npos) {
+            stats_.weekPomodoros = std::stoi(statsJson.substr(weekPos, weekEnd - weekPos));
+        }
+    }
+    
+    // Parse monthPomodoros
+    size_t monthPos = statsJson.find("\"monthPomodoros\":");
+    if (monthPos != std::string::npos) {
+        monthPos += 17;
+        size_t monthEnd = statsJson.find("}", monthPos);
+        if (monthEnd == std::string::npos) {
+            monthEnd = statsJson.find(",", monthPos);
+        }
+        if (monthEnd != std::string::npos) {
+            stats_.monthPomodoros = std::stoi(statsJson.substr(monthPos, monthEnd - monthPos));
+        }
+    }
+}
+
+void PomodoroTimer::parseJsonTasks(const std::string& json) {
+    size_t tasksPos = json.find("\"tasks\":[");
+    if (tasksPos == std::string::npos) return;
+    
+    size_t tasksStart = tasksPos + 9;
+    size_t tasksEnd = json.find("]}", tasksStart);
+    if (tasksEnd == std::string::npos) return;
+    
+    std::string tasksJson = json.substr(tasksStart, tasksEnd - tasksStart);
+    
+    tasks_.clear();
+    
+    // Parse each task object
+    size_t pos = 0;
+    while (pos < tasksJson.length()) {
+        size_t taskStart = tasksJson.find("{", pos);
+        if (taskStart == std::string::npos) break;
+        
+        size_t taskEnd = tasksJson.find("}", taskStart);
+        if (taskEnd == std::string::npos) break;
+        
+        std::string taskJson = tasksJson.substr(taskStart, taskEnd - taskStart + 1);
+        
+        Task task;
+        
+        // Parse task id
+        size_t idPos = taskJson.find("\"id\":");
+        if (idPos != std::string::npos) {
+            idPos += 5;
+            size_t idEnd = taskJson.find(",", idPos);
+            if (idEnd != std::string::npos) {
+                task.id = std::stoi(taskJson.substr(idPos, idEnd - idPos));
+            }
+        }
+        
+        // Parse task title
+        size_t titlePos = taskJson.find("\"title\":\"");
+        if (titlePos != std::string::npos) {
+            titlePos += 9;
+            size_t titleEnd = taskJson.find("\"", titlePos);
+            if (titleEnd != std::string::npos) {
+                task.title = taskJson.substr(titlePos, titleEnd - titlePos);
+            }
+        }
+        
+        // Parse task description
+        size_t descPos = taskJson.find("\"description\":\"");
+        if (descPos != std::string::npos) {
+            descPos += 15;
+            size_t descEnd = taskJson.find("\"", descPos);
+            if (descEnd != std::string::npos) {
+                task.description = taskJson.substr(descPos, descEnd - descPos);
+            }
+        }
+        
+        // Parse completed status
+        task.completed = taskJson.find("\"completed\":true") != std::string::npos;
+        
+        // Parse estimatedPomodoros
+        size_t estPos = taskJson.find("\"estimatedPomodoros\":");
+        if (estPos != std::string::npos) {
+            estPos += 21;
+            size_t estEnd = taskJson.find(",", estPos);
+            if (estEnd != std::string::npos) {
+                task.estimatedPomodoros = std::stoi(taskJson.substr(estPos, estEnd - estPos));
+            }
+        }
+        
+        // Parse completedPomodoros
+        size_t compPos = taskJson.find("\"completedPomodoros\":");
+        if (compPos != std::string::npos) {
+            compPos += 21;
+            size_t compEnd = taskJson.find("}", compPos);
+            if (compEnd == std::string::npos) {
+                compEnd = taskJson.find(",", compPos);
+            }
+            if (compEnd != std::string::npos) {
+                task.completedPomodoros = std::stoi(taskJson.substr(compPos, compEnd - compPos));
+            }
+        }
+        
+        task.createdAt = std::chrono::system_clock::now();
+        tasks_.push_back(task);
+        
+        // Update nextTaskId to be higher than any loaded task
+        if (task.id >= nextTaskId_) {
+            nextTaskId_ = task.id + 1;
+        }
+        
+        pos = taskEnd + 1;
+    }
 }
 
 } // namespace Pomodoro

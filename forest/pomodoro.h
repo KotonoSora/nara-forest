@@ -159,6 +159,11 @@ private:
     void moveToNextSession();
     int getDurationForSessionType(SessionType type) const;
     void updateCurrentTask();
+    
+    // JSON parsing helper functions
+    void parseJsonSettings(const std::string& json);
+    void parseJsonStatistics(const std::string& json);
+    void parseJsonTasks(const std::string& json);
 };
 
 } // namespace Pomodoro

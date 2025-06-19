@@ -260,4 +260,85 @@ extern "C" {
     int loadState() {
         return g_app ? (g_app->loadAppState() ? 1 : 0) : 0;
     }
+    
+    EMSCRIPTEN_KEEPALIVE
+    int getTaskCount() {
+        if (g_app) {
+            const auto& tasks = g_app->getTimer()->getTasks();
+            return static_cast<int>(tasks.size());
+        }
+        return 0;
+    }
+    
+    EMSCRIPTEN_KEEPALIVE
+    const char* getTaskTitle(int taskId) {
+        if (g_app) {
+            const Task* task = g_app->getTimer()->findTask(taskId);
+            if (task) {
+                static std::string title = task->title;
+                return title.c_str();
+            }
+        }
+        return "";
+    }
+    
+    EMSCRIPTEN_KEEPALIVE
+    const char* getTaskDescription(int taskId) {
+        if (g_app) {
+            const Task* task = g_app->getTimer()->findTask(taskId);
+            if (task) {
+                static std::string description = task->description;
+                return description.c_str();
+            }
+        }
+        return "";
+    }
+    
+    EMSCRIPTEN_KEEPALIVE
+    int getTaskEstimatedPomodoros(int taskId) {
+        if (g_app) {
+            const Task* task = g_app->getTimer()->findTask(taskId);
+            return task ? task->estimatedPomodoros : 0;
+        }
+        return 0;
+    }
+    
+    EMSCRIPTEN_KEEPALIVE
+    int getTaskCompletedPomodoros(int taskId) {
+        if (g_app) {
+            const Task* task = g_app->getTimer()->findTask(taskId);
+            return task ? task->completedPomodoros : 0;
+        }
+        return 0;
+    }
+    
+    EMSCRIPTEN_KEEPALIVE
+    int isTaskCompleted(int taskId) {
+        if (g_app) {
+            const Task* task = g_app->getTimer()->findTask(taskId);
+            return task ? (task->completed ? 1 : 0) : 0;
+        }
+        return 0;
+    }
+    
+    EMSCRIPTEN_KEEPALIVE
+    int getTaskIdByIndex(int index) {
+        if (g_app) {
+            const auto& tasks = g_app->getTimer()->getTasks();
+            if (index >= 0 && index < static_cast<int>(tasks.size())) {
+                return tasks[index].id;
+            }
+        }
+        return -1;
+    }
+    
+    EMSCRIPTEN_KEEPALIVE
+    int updateTask(int taskId, const char* title, const char* description, int estimatedPomodoros) {
+        if (g_app && title) {
+            std::string titleStr(title);
+            std::string descStr(description ? description : "");
+            return g_app->getTimer()->updateTask(taskId, titleStr, descStr, estimatedPomodoros) ? 1 : 0;
+        }
+        return 0;
+    }
 }

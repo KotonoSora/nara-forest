@@ -142,4 +142,11 @@ int calculateProductivityScore(const Statistics& stats);
 std::vector<std::pair<std::string, int>> getWeeklyPomodoroData(const Statistics& stats);
 std::vector<std::pair<std::string, int>> getTaskCompletionData(const std::vector<Task>& tasks);
 
+// Additional analytics and data tracking functions
+std::vector<std::pair<std::string, double>> getProductivityTrends(const Statistics& stats);
+std::string getMotivationalMessage(const Statistics& stats);
+std::string getStreakInfo(const Statistics& stats);
+double calculateFocusEfficiency(const Statistics& stats);
+std::vector<std::pair<std::string, int>> getSessionTypeBreakdown(const Statistics& stats);
+
 } // namespace Pomodoro

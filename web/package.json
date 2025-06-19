@@ -1,33 +1,14 @@
 {
-  "name": "pomodoro-forest-web",
+  "name": "nara-forest",
   "private": true,
-  "version": "1.0.0",
-  "description": "A beautiful and powerful Pomodoro timer web application with WebAssembly backend",
+  "version": "0.0.1-beta-2025-06",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "build-wasm": "cd ../forest && make",
-    "build-wasm-debug": "cd ../forest && make debug",
-    "build-wasm-release": "cd ../forest && make release",
-    "build-all": "npm run build-wasm && npm run build",
-    "clean": "cd ../forest && make clean && rm -rf dist",
-    "serve": "python3 -m http.server 3000 -d dist"
+    "preview": "vite preview"
   },
   "devDependencies": {
     "vite": "6.3.5"
-  },
-  "dependencies": {},
-  "keywords": [
-    "pomodoro",
-    "timer",
-    "productivity",
-    "webassembly",
-    "cpp",
-    "forest",
-    "focus"
-  ],
-  "author": "Pomodoro Forest Team",
-  "license": "MIT"
+  }
 }
