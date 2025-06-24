@@ -1,5 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
 
+:root {
+  /* Default theme variables */
+  --flip-bg-primary: #222;
+  --flip-bg-secondary: #393939;
+  --flip-color-primary: #ccc;
+  --flip-color-secondary: #fff;
+  --flip-border-color: #000;
+  --flip-font-size: 9vw;
+  --flip-label-size: 2vw;
+  --flip-border-radius: 0.15em;
+  --flip-animation-duration-top: 0.3s;
+  --flip-animation-duration-bottom: 0.6s;
+  --flip-animation-easing-top: cubic-bezier(0.37, 0.01, 0.94, 0.35);
+  --flip-animation-easing-bottom: cubic-bezier(0.15, 0.45, 0.28, 1);
+}
+
 html {
   height: 100%;
   font-family: "Roboto Condensed", sans-serif;
@@ -36,14 +52,14 @@ body {
 }
 
 .flip-clock__slot {
-  font-size: 2vw;
+  font-size: var(--flip-label-size);
 }
 
 .card {
   display: block;
   position: relative;
   padding-bottom: 0.72em;
-  font-size: 9vw;
+  font-size: var(--flip-font-size);
   line-height: 0.95;
 }
 
@@ -53,10 +69,10 @@ body {
 .card__back::after {
   display: block;
   height: 0.72em;
-  color: #ccc;
-  background: #222;
+  color: var(--flip-color-primary);
+  background: var(--flip-bg-primary);
   padding: 0.25em;
-  border-radius: 0.15em 0.15em 0 0;
+  border-radius: var(--flip-border-radius) var(--flip-border-radius) 0 0;
   backface-visibility: hidden;
   transform-style: preserve-3d;
   width: 1.8em;
@@ -64,13 +80,13 @@ body {
 }
 
 .card__bottom {
-  color: #fff;
+  color: var(--flip-color-secondary);
   position: absolute;
   top: 50%;
   left: 0;
-  border-top: solid 1px #000;
-  background: #393939;
-  border-radius: 0 0 0.15em 0.15em;
+  border-top: solid 1px var(--flip-border-color);
+  background: var(--flip-bg-secondary);
+  border-radius: 0 0 var(--flip-border-radius) var(--flip-border-radius);
   pointer-events: none;
   overflow: hidden;
 }
@@ -97,7 +113,8 @@ body {
 }
 
 .flip .card__back::before {
-  animation: flipTop 0.3s cubic-bezier(0.37, 0.01, 0.94, 0.35);
+  animation: flipTop var(--flip-animation-duration-top)
+    var(--flip-animation-easing-top);
   animation-fill-mode: both;
   transform-origin: center bottom;
 }
@@ -105,7 +122,8 @@ body {
 .flip .card__back .card__bottom {
   transform-origin: center top;
   animation-fill-mode: both;
-  animation: flipBottom 0.6s cubic-bezier(0.15, 0.45, 0.28, 1);
+  animation: flipBottom var(--flip-animation-duration-bottom)
+    var(--flip-animation-easing-bottom);
 }
 
 @keyframes flipTop {
@@ -137,5 +155,49 @@ body {
     opacity: 0.99;
     transform: rotateX(0deg);
     z-index: 5;
+  }
+}
+
+/* Theme variations */
+.flip-clock.theme-dark {
+  --flip-bg-primary: #1a1a1a;
+  --flip-bg-secondary: #2d2d2d;
+  --flip-color-primary: #e0e0e0;
+  --flip-color-secondary: #ffffff;
+  --flip-border-color: #000;
+}
+
+.flip-clock.theme-light {
+  --flip-bg-primary: #f5f5f5;
+  --flip-bg-secondary: #ffffff;
+  --flip-color-primary: #333;
+  --flip-color-secondary: #000;
+  --flip-border-color: #ddd;
+}
+
+.flip-clock.theme-neon {
+  --flip-bg-primary: #0f0f23;
+  --flip-bg-secondary: #1a1a3e;
+  --flip-color-primary: #00ff88;
+  --flip-color-secondary: #00ffff;
+  --flip-border-color: #003366;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  :root {
+    --flip-font-size: 12vw;
+    --flip-label-size: 3vw;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --flip-font-size: 15vw;
+    --flip-label-size: 4vw;
+  }
+
+  .flip-clock__piece {
+    margin: 0 2px;
   }
 }
