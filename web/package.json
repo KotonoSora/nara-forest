@@ -9,6 +9,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "4.1.10",
+    "@types/node": "24.0.3",
+    "motion": "12.19.1",
+    "tailwindcss": "4.1.10",
     "vite": "6.3.5"
+  },
+  "engines": {
+    "node": "22.16.0"
   }
 }
