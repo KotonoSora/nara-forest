@@ -1,6 +1,6 @@
 class CountdownTracker {
   constructor(label, value) {
-    var el = document.createElement("span");
+    const el = document.createElement("span");
 
     el.className = "flip-clock__piece";
     el.innerHTML =
@@ -11,7 +11,7 @@ class CountdownTracker {
 
     this.el = el;
 
-    var top = el.querySelector(".card__top"),
+    const top = el.querySelector(".card__top"),
       bottom = el.querySelector(".card__bottom"),
       back = el.querySelector(".card__back"),
       backBottom = el.querySelector(".card__back .card__bottom");
@@ -40,7 +40,7 @@ class CountdownTracker {
 // Calculation adapted from https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
 
 function getTimeRemaining(endtime) {
-  var t = Date.parse(endtime) - Date.parse(new Date());
+  const t = Date.parse(endtime) - Date.parse(new Date());
   return {
     Total: t,
     Days: Math.floor(t / (1000 * 60 * 60 * 24)),
@@ -51,7 +51,7 @@ function getTimeRemaining(endtime) {
 }
 
 function getTime() {
-  var t = new Date();
+  const t = new Date();
   return {
     Total: t,
     // Hours: t.getHours() % 12,
@@ -66,12 +66,12 @@ class Clock {
     countdown = countdown ? new Date(Date.parse(countdown)) : false;
     callback = callback || function () {};
 
-    var updateFn = countdown ? getTimeRemaining : getTime;
+    const updateFn = countdown ? getTimeRemaining : getTime;
 
     this.el = document.createElement("div");
     this.el.className = "flip-clock";
 
-    var trackers = {},
+    let trackers = {},
       t = updateFn(countdown),
       key,
       timeinterval;
@@ -84,7 +84,7 @@ class Clock {
       this.el.appendChild(trackers[key].el);
     }
 
-    var i = 0;
+    let i = 0;
     function updateClock() {
       timeinterval = requestAnimationFrame(updateClock);
 
@@ -93,7 +93,7 @@ class Clock {
         return;
       }
 
-      var t = updateFn(countdown);
+      const t = updateFn(countdown);
       if (t.Total < 0) {
         cancelAnimationFrame(timeinterval);
         for (key in trackers) {
