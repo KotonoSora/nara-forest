@@ -161,9 +161,25 @@ class DOMRenderer {
     }
   }
 
-  destroy() {
-    this.trackers.forEach((tracker) => tracker.destroy());
+  clearTrackers() {
+    this.trackers.forEach((tracker) => {
+      tracker.destroy();
+      if (tracker.element && tracker.element.parentNode) {
+        tracker.element.parentNode.removeChild(tracker.element);
+      }
+    });
     this.trackers.clear();
+  }
+
+  destroy() {
+    this.trackers.forEach((tracker) => {
+      tracker.destroy();
+      if (tracker.element && tracker.element.parentNode) {
+        tracker.element.parentNode.removeChild(tracker.element);
+      }
+    });
+    this.trackers.clear();
+    // Don't remove container from DOM - let the Clock class manage that
   }
 }
 
@@ -315,7 +331,7 @@ class Clock extends EventEmitter {
 
     this.config = {
       countdown: null,
-      mode: "clock", // 'clock' or 'countdown'
+      mode: "clock",
       updateInterval: 100,
       timeUnits: ["Hours", "Minutes", "Seconds"],
       format24Hour: true,
@@ -398,19 +414,7 @@ class Clock extends EventEmitter {
   }
 
   get el() {
-    return this.element; // Backward compatibility
-  }
-
-  pause() {
-    this.animationController.stop();
-    this.emit("pause");
-    return this;
-  }
-
-  resume() {
-    this.setupClock();
-    this.emit("resume");
-    return this;
+    return this.element;
   }
 
   setCountdown(targetDate) {
@@ -449,12 +453,8 @@ class Clock extends EventEmitter {
 
   restart() {
     this.animationController.stop();
+    this.renderer.clearTrackers();
 
-    // Clear existing trackers but keep container
-    this.renderer.trackers.forEach((tracker) => tracker.destroy());
-    this.renderer.trackers.clear();
-
-    // Re-initialize components
     this.timeCalculator = new TimeCalculator({
       timeUnits: this.config.timeUnits,
       format24Hour: this.config.format24Hour,
@@ -464,7 +464,6 @@ class Clock extends EventEmitter {
       updateInterval: this.config.updateInterval,
     });
 
-    // Setup clock with existing renderer
     this.setupClock();
     this.emit("restart");
     return this;
@@ -475,7 +474,6 @@ class Clock extends EventEmitter {
     this.renderer.destroy();
     this.events.clear();
 
-    // Remove from DOM if it has a parent
     if (this.renderer.container.parentNode) {
       this.renderer.container.parentNode.removeChild(this.renderer.container);
     }

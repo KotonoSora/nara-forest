@@ -1,0 +1,253 @@
+/* Settings UI Styles */
+.settings-container {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  max-width: 600px;
+}
+
+.settings-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.settings-section.save-section {
+  margin-bottom: 0;
+  background: #f8f9fa;
+  border-top: 2px solid #e9ecef;
+  text-align: center;
+}
+
+.settings-section h3 {
+  margin: 0 0 16px 0;
+  color: #111827;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.settings-row:last-child {
+  margin-bottom: 0;
+}
+
+.settings-label {
+  font-weight: 500;
+  color: #374151;
+  min-width: 120px;
+}
+
+.settings-input {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  width: 120px;
+  transition: border-color 0.2s ease;
+}
+
+.settings-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.settings-select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  min-width: 150px;
+  background: white;
+  transition: border-color 0.2s ease;
+}
+
+.settings-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.settings-button {
+  padding: 10px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+}
+
+.settings-button:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.settings-button:active {
+  transform: translateY(0);
+}
+
+.settings-button.primary {
+  background: #28a745;
+  font-weight: 600;
+  padding: 12px 24px;
+}
+
+.settings-button.primary:hover {
+  background: #218838;
+}
+
+.settings-button.secondary {
+  background: #6c757d;
+}
+
+.settings-button.secondary:hover {
+  background: #545b62;
+}
+
+/* Radio Buttons */
+.radio-group {
+  display: flex;
+  gap: 16px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.radio-option input[type="radio"] {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  accent-color: #007bff;
+}
+
+.radio-label {
+  color: #374151;
+  font-weight: 500;
+}
+
+/* Toggle Switch */
+.settings-toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.settings-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #007bff;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+/* Countdown Settings */
+.countdown-settings {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.countdown-settings.show {
+  opacity: 1;
+}
+
+/* Responsive settings */
+@media (max-width: 768px) {
+  .settings-container {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .settings-section {
+    padding: 12px;
+  }
+  
+  .settings-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .settings-label {
+    min-width: auto;
+  }
+  
+  .settings-input,
+  .settings-select {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .settings-button {
+    width: 100%;
+    margin-bottom: 8px;
+    margin-right: 0;
+  }
+  
+  .settings-section.save-section .settings-row {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .settings-section.save-section .settings-button {
+    width: auto;
+    margin: 0 4px;
+  }
+  
+  .radio-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+} 

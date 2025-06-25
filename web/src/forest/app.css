@@ -158,31 +158,6 @@ body {
   }
 }
 
-/* Theme variations */
-.flip-clock.theme-dark {
-  --flip-bg-primary: #1a1a1a;
-  --flip-bg-secondary: #2d2d2d;
-  --flip-color-primary: #e0e0e0;
-  --flip-color-secondary: #ffffff;
-  --flip-border-color: #000;
-}
-
-.flip-clock.theme-light {
-  --flip-bg-primary: #f5f5f5;
-  --flip-bg-secondary: #ffffff;
-  --flip-color-primary: #333;
-  --flip-color-secondary: #000;
-  --flip-border-color: #ddd;
-}
-
-.flip-clock.theme-neon {
-  --flip-bg-primary: #0f0f23;
-  --flip-bg-secondary: #1a1a3e;
-  --flip-color-primary: #00ff88;
-  --flip-color-secondary: #00ffff;
-  --flip-border-color: #003366;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   :root {
