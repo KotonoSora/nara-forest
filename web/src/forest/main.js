@@ -5,6 +5,7 @@ import { Clock } from "./core/index.js";
 import { SettingsUI } from "./ui/index.js";
 import { EventHandlers } from "./handlers/index.js";
 import { Modal, TriggerButton } from "./ui/index.js";
+import { FullscreenButton } from "./ui/index.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Create clock with default settings
@@ -33,4 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Mount trigger button
   triggerButton.mount();
+
+  // Setup fullscreen trigger button
+  const fullscreenButton = new FullscreenButton("#app");
+  fullscreenButton.mount();
 });

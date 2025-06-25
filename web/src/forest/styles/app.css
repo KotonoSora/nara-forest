@@ -175,4 +175,29 @@ body {
   .flip-clock__piece {
     margin: 0 2px;
   }
+}
+
+.fullscreen-trigger-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #28a745;
+  border: none;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  transition: all 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreen-trigger-btn:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
 } 
