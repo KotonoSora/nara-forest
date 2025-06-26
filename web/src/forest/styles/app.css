@@ -46,6 +46,29 @@ body {
   user-select: none;
 }
 
+/* App container styling for fullscreen centering */
+#app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--zinc-900);
+}
+
+/* Fullscreen-specific styles */
+#app:fullscreen,
+#app:-webkit-full-screen,
+#app:-moz-full-screen,
+#app:-ms-fullscreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--zinc-900);
+}
+
 .flip-clock {
   text-align: center;
   perspective: 400px;
