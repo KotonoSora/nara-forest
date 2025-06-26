@@ -68,7 +68,7 @@ export class SettingsUI {
         </div>
       </div>
       <div class="settings-row countdown-settings" id="countdownSettings" style="display: none;">
-        <label class="settings-label">Minutes:</label>
+        <label class="settings-label">Duration (minutes):</label>
         <input type="number" id="countdownMinutes" class="settings-input" min="1" max="1440" placeholder="Enter minutes" value="5">
       </div>
     `;
