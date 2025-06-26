@@ -82,8 +82,8 @@
 
 .settings-button {
   padding: 10px 16px;
-  background: #007bff;
-  color: white;
+  background: var(--zinc-700);
+  color: var(--zinc-100);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -95,7 +95,7 @@
 }
 
 .settings-button:hover {
-  background: #0056b3;
+  background: var(--zinc-600);
   transform: translateY(-1px);
 }
 
@@ -104,21 +104,21 @@
 }
 
 .settings-button.primary {
-  background: #28a745;
+  background: var(--zinc-800);
   font-weight: 600;
   padding: 12px 24px;
 }
 
 .settings-button.primary:hover {
-  background: #218838;
+  background: var(--zinc-700);
 }
 
 .settings-button.secondary {
-  background: #6c757d;
+  background: var(--zinc-600);
 }
 
 .settings-button.secondary:hover {
-  background: #545b62;
+  background: var(--zinc-500);
 }
 
 /* Radio Buttons */
