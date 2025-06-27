@@ -1,4 +1,4 @@
-import { FlipCardTracker } from './FlipCardTracker.js';
+import { FlipCardTracker } from '~/forest/components/FlipCardTracker.js';
 
 // DOM rendering and manipulation
 class DOMRenderer {

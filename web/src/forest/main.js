@@ -1,13 +1,13 @@
-import "./styles/app.css";
-import "./styles/settings.css";
-import "./styles/modal.css";
-import "./styles/buttons.css";
-import { Clock } from "./core/Clock.js";
-import { SettingsUI } from "./ui/SettingsUI.js";
-import { EventHandlers } from "./handlers/EventHandlers.js";
-import { Modal } from "./ui/Modal.js";
-import { TriggerButton } from "./ui/TriggerButton.js";
-import { FullscreenButton } from "./ui/FullscreenButton.js";
+import "~/forest/styles/app.css";
+import "~/forest/styles/settings.css";
+import "~/forest/styles/modal.css";
+import "~/forest/styles/buttons.css";
+import { Clock } from "~/forest/core/Clock.js";
+import { SettingsUI } from "~/forest/ui/SettingsUI.js";
+import { EventHandlers } from "~/forest/handlers/EventHandlers.js";
+import { Modal } from "~/forest/ui/Modal.js";
+import { TriggerButton } from "~/forest/ui/TriggerButton.js";
+import { FullscreenButton } from "~/forest/ui/FullscreenButton.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Create clock with default settings

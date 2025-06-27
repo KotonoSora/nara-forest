@@ -3,6 +3,11 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "node:path";
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      "~": path.resolve(__dirname, "src"),
+    },
+  },
   build: {
     cssCodeSplit: true,
     minify: "esbuild",
