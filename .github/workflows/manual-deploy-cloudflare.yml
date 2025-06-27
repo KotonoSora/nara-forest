@@ -1,0 +1,64 @@
+name: Manual Deploy to Cloudflare Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy"
+        required: true
+        default: main
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Manual Deploy to Cloudflare
+    runs-on: ubuntu-latest
+    if: github.repository == 'KotonoSora/nara-forest'
+    environment: production
+
+    steps:
+      - name: Validate required secrets
+        run: |
+          missing=()
+          [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ] && missing+=("CLOUDFLARE_API_TOKEN")
+          [ -z "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" ] && missing+=("CLOUDFLARE_ACCOUNT_ID")
+
+          if [ ${#missing[@]} -ne 0 ]; then
+            echo "❌ Missing secrets: ${missing[*]}"
+            exit 1
+          fi
+
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Setup Bun cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Open web folder
+        run: cd web
+
+      - name: Install project dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Deploy to Cloudflare Pages
+        run: bun run deploy
+
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      NODE_ENV: production
