@@ -1,6 +1,7 @@
 import "./styles/app.css";
 import "./styles/settings.css";
 import "./styles/modal.css";
+import "./styles/buttons.css";
 import { Clock } from "./core/index.js";
 import { SettingsUI } from "./ui/index.js";
 import { EventHandlers } from "./handlers/index.js";
