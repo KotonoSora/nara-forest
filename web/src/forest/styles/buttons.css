@@ -1,0 +1,150 @@
+/* Trigger Button and Fullscreen Button Styles */
+
+/* Settings Trigger Button */
+.settings-trigger-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--zinc-800);
+  border: 1px solid var(--zinc-700);
+  color: var(--zinc-100);
+  cursor: pointer;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.2),
+    0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-trigger-btn:hover {
+  background: var(--zinc-700);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 20px 40px -10px rgba(0, 0, 0, 0.3),
+    0 8px 12px -4px rgba(0, 0, 0, 0.15);
+}
+
+.settings-trigger-btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.2),
+    0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.settings-trigger-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.settings-trigger-btn:hover svg {
+  transform: rotate(90deg);
+}
+
+/* Fullscreen Trigger Button */
+.fullscreen-trigger-btn {
+  position: fixed;
+  top: calc(1.5rem + 52px + 0.75rem);
+  right: 1.5rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--zinc-800);
+  border: 1px solid var(--zinc-700);
+  color: var(--zinc-100);
+  cursor: pointer;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.2),
+    0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreen-trigger-btn:hover {
+  background: var(--zinc-700);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 20px 40px -10px rgba(0, 0, 0, 0.3),
+    0 8px 12px -4px rgba(0, 0, 0, 0.15);
+}
+
+.fullscreen-trigger-btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.2),
+    0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.fullscreen-trigger-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.fullscreen-trigger-btn:hover svg {
+  transform: scale(1.1);
+}
+
+/* Responsive Button Styles */
+@media (max-width: 768px) {
+  .settings-trigger-btn {
+    top: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  .settings-trigger-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .fullscreen-trigger-btn {
+    top: calc(1rem + 48px + 0.5rem);
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  .fullscreen-trigger-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-trigger-btn {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 44px;
+    height: 44px;
+  }
+
+  .settings-trigger-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .fullscreen-trigger-btn {
+    top: calc(0.75rem + 44px + 0.5rem);
+    right: 0.75rem;
+    width: 44px;
+    height: 44px;
+  }
+
+  .fullscreen-trigger-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
