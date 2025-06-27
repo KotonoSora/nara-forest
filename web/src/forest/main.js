@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Create trigger button
   const triggerButton = new TriggerButton(() => {
+    settingsUI.initFromConfig();
     modal.open();
   });
 

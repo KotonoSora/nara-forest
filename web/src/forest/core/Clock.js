@@ -123,8 +123,34 @@ class Clock extends EventEmitter {
 
   restart() {
     this.animationController.stop();
-    this.renderer.clearTrackers();
 
+    // Store reference to old container and its next sibling
+    const oldContainer = this.renderer.container;
+    const parent = oldContainer.parentNode;
+    const nextSibling = oldContainer.nextSibling;
+
+    // Remove old renderer from DOM and destroy
+    if (parent) {
+      parent.removeChild(oldContainer);
+    }
+    this.renderer.destroy();
+
+    // Create new renderer
+    this.renderer = new DOMRenderer({
+      theme: this.config.theme,
+      showLabel: this.config.showLabel,
+    });
+
+    // Insert new renderer in the same position in the DOM
+    if (parent) {
+      if (nextSibling) {
+        parent.insertBefore(this.renderer.container, nextSibling);
+      } else {
+        parent.appendChild(this.renderer.container);
+      }
+    }
+
+    // Re-initialize other components
     this.timeCalculator = new TimeCalculator({
       timeUnits: this.config.timeUnits,
       format24Hour: this.config.format24Hour,

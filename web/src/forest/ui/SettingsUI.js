@@ -1,4 +1,5 @@
-import { getTimeFormatOptions } from "../utils/TimeFormats.js";
+import { getTimeFormatOptions } from "~/forest/utils/TimeFormats.js";
+import { getTimeUnits } from "~/forest/utils/TimeFormats.js";
 
 export class SettingsUI {
   constructor(clock) {
@@ -16,6 +17,58 @@ export class SettingsUI {
     this.settingsDiv.appendChild(this.createSaveSection());
 
     return this.settingsDiv;
+  }
+
+  initFromConfig() {
+    // Show Labels
+    const showLabels = this.clock.config.showLabel;
+    const showLabelsCheckbox = this.settingsDiv.querySelector('#showLabels');
+    if (showLabelsCheckbox) {
+      showLabelsCheckbox.checked = !!showLabels;
+    }
+
+    // Time Format
+    const timeFormatSelect = this.settingsDiv.querySelector('#timeFormat');
+    if (timeFormatSelect) {
+      // Find the format string that matches the current timeUnits
+      const currentUnits = this.clock.config.timeUnits;
+      const options = Array.from(timeFormatSelect.options);
+      for (const option of options) {
+        // Use getTimeUnits to compare
+        const formatUnits = getTimeUnits(option.value);
+        if (JSON.stringify(formatUnits) === JSON.stringify(currentUnits)) {
+          option.selected = true;
+        } else {
+          option.selected = false;
+        }
+      }
+    }
+
+    // Timer Mode
+    const mode = this.clock.config.mode;
+    const clockModeRadio = this.settingsDiv.querySelector('#clockMode');
+    const countdownModeRadio = this.settingsDiv.querySelector('#countdownMode');
+    if (clockModeRadio && countdownModeRadio) {
+      clockModeRadio.checked = mode === 'clock';
+      countdownModeRadio.checked = mode === 'countdown';
+      // Show/hide countdown settings
+      const countdownSettings = this.settingsDiv.querySelector('#countdownSettings');
+      if (countdownSettings) {
+        countdownSettings.style.display = mode === 'countdown' ? 'flex' : 'none';
+        countdownSettings.classList.toggle('show', mode === 'countdown');
+      }
+    }
+
+    // Countdown Duration
+    const countdownInput = this.settingsDiv.querySelector('#countdownMinutes');
+    if (countdownInput && this.clock.config.countdown) {
+      // Calculate remaining minutes from countdown target
+      const now = new Date();
+      const target = new Date(this.clock.config.countdown);
+      const diffMs = target - now;
+      const minutes = Math.max(1, Math.round(diffMs / 60000));
+      countdownInput.value = minutes;
+    }
   }
 
   createClockFormatSection() {
