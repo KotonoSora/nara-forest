@@ -16,7 +16,7 @@ export class TriggerButton {
     `;
     this.button.setAttribute("aria-label", "Open settings");
     this.button.setAttribute("title", "Settings");
-    
+
     this.button.addEventListener("click", (e) => {
       e.preventDefault();
       this.onClick();
@@ -33,4 +33,4 @@ export class TriggerButton {
     }
     this.button = null;
   }
-} 
+}

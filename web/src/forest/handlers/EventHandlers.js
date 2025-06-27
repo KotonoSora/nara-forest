@@ -1,3 +1,5 @@
+import { getTimeUnits } from "~/forest/utils/TimeFormats.js";
+
 export class EventHandlers {
   constructor(clock, settingsUI, modal) {
     this.clock = clock;
@@ -7,12 +9,11 @@ export class EventHandlers {
   }
 
   setupClockEvents() {
-    this.clock
-      .on("restart", () => {
-        if (this.pendingLabelVisibility !== null) {
-          this.applyLabelVisibility(this.pendingLabelVisibility);
-        }
-      });
+    this.clock.on("restart", () => {
+      if (this.pendingLabelVisibility !== null) {
+        this.applyLabelVisibility(this.pendingLabelVisibility);
+      }
+    });
   }
 
   setupSettingsEvents() {
@@ -43,8 +44,12 @@ export class EventHandlers {
   saveAllSettings() {
     const format = document.getElementById("timeFormat")?.value;
     const showLabels = document.getElementById("showLabels")?.checked;
-    const timerMode = document.querySelector('input[name="timerMode"]:checked')?.value;
-    const countdownMinutes = parseInt(document.getElementById("countdownMinutes")?.value);
+    const timerMode = document.querySelector(
+      'input[name="timerMode"]:checked',
+    )?.value;
+    const countdownMinutes = parseInt(
+      document.getElementById("countdownMinutes")?.value,
+    );
 
     this.pendingLabelVisibility = showLabels;
 
@@ -62,18 +67,13 @@ export class EventHandlers {
   }
 
   applyTimeFormat(format) {
-    const timeUnits = {
-      "HH:MM:SS": ["Hours", "Minutes", "Seconds"],
-      "MM:SS": ["Minutes", "Seconds"],
-      "SS": ["Seconds"]
-    };
-    
-    this.clock.setTimeUnits(timeUnits[format] || ["Hours", "Minutes", "Seconds"]);
+    const timeUnits = getTimeUnits(format);
+    this.clock.setTimeUnits(timeUnits);
   }
 
   applyLabelVisibility(showLabels) {
     const labels = this.clock.el.querySelectorAll(".flip-clock__slot");
-    labels.forEach(label => {
+    labels.forEach((label) => {
       label.style.display = showLabels ? "block" : "none";
     });
   }
@@ -87,4 +87,4 @@ export class EventHandlers {
   setClockMode() {
     this.clock.setClockMode();
   }
-} 
+}

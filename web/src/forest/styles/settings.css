@@ -42,7 +42,7 @@
 }
 
 .settings-section h3::before {
-  content: '';
+  content: "";
   width: 2px;
   height: 1rem;
   background: var(--zinc-400);
@@ -86,7 +86,7 @@
 .settings-input:focus {
   outline: none;
   border-color: var(--zinc-500);
-  box-shadow: 
+  box-shadow:
     0 0 0 3px rgba(113, 113, 122, 0.1),
     0 1px 3px rgba(0, 0, 0, 0.1);
   background: white;
@@ -113,7 +113,7 @@
 .settings-select:focus {
   outline: none;
   border-color: var(--zinc-500);
-  box-shadow: 
+  box-shadow:
     0 0 0 3px rgba(113, 113, 122, 0.1),
     0 1px 3px rgba(0, 0, 0, 0.1);
   background: white;
@@ -280,52 +280,52 @@ input:checked + .toggle-slider:before {
   .settings-container {
     margin-top: 0;
   }
-  
+
   .settings-section {
     padding: 0.875rem;
     margin-bottom: 1rem;
   }
-  
+
   .settings-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
     margin-bottom: 1rem;
   }
-  
+
   .settings-label {
     min-width: auto;
     margin-bottom: 0.25rem;
   }
-  
+
   .settings-input,
   .settings-select {
     width: 100%;
     min-width: auto;
   }
-  
+
   .settings-button {
     width: 100%;
     margin-right: 0;
     margin-bottom: 0.5rem;
   }
-  
+
   .settings-section.save-section .settings-row {
     flex-direction: row;
     gap: 0.5rem;
   }
-  
+
   .settings-section.save-section .settings-button {
     width: auto;
     margin-bottom: 0;
   }
-  
+
   .radio-group {
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-start;
   }
-  
+
   .radio-option {
     padding: 0.125rem 0;
   }
@@ -336,28 +336,28 @@ input:checked + .toggle-slider:before {
     padding: 0.75rem;
     margin-bottom: 0.75rem;
   }
-  
+
   .settings-section h3 {
     font-size: 0.9375rem;
     margin-bottom: 0.75rem;
   }
-  
+
   .settings-label {
     font-size: 0.8125rem;
   }
-  
+
   .settings-input,
   .settings-select {
     font-size: 0.8125rem;
     padding: 0.5rem 0.625rem;
   }
-  
+
   .settings-button {
     font-size: 0.8125rem;
     padding: 0.5rem 1rem;
   }
-  
+
   .settings-button.primary {
     padding: 0.625rem 1.25rem;
   }
-} 
+}

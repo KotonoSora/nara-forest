@@ -1,7 +1,8 @@
-import { EventEmitter } from '~/forest/utils/EventEmitter.js';
-import { TimeCalculator } from '~/forest/utils/TimeCalculator.js';
-import { DOMRenderer } from '~/forest/components/DOMRenderer.js';
-import { AnimationController } from '~/forest/components/AnimationController.js';
+import { EventEmitter } from "~/forest/utils/EventEmitter.js";
+import { TimeCalculator } from "~/forest/utils/TimeCalculator.js";
+import { DOMRenderer } from "~/forest/components/DOMRenderer.js";
+import { AnimationController } from "~/forest/components/AnimationController.js";
+import { getTimeUnits } from "~/forest/utils/TimeFormats";
 
 // Main Clock class
 class Clock extends EventEmitter {
@@ -12,7 +13,7 @@ class Clock extends EventEmitter {
       countdown: null,
       mode: "clock",
       updateInterval: 100,
-      timeUnits: ["Hours", "Minutes", "Seconds"],
+      timeUnits: getTimeUnits("HH:MM"),
       format24Hour: true,
       theme: {},
       ...config,
@@ -147,4 +148,4 @@ class Clock extends EventEmitter {
   }
 }
 
-export { Clock }; 
+export { Clock };

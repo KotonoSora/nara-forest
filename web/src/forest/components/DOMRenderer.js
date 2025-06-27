@@ -1,4 +1,4 @@
-import { FlipCardTracker } from '~/forest/components/FlipCardTracker.js';
+import { FlipCardTracker } from "~/forest/components/FlipCardTracker.js";
 
 // DOM rendering and manipulation
 class DOMRenderer {
@@ -78,4 +78,4 @@ class DOMRenderer {
   }
 }
 
-export { DOMRenderer }; 
+export { DOMRenderer };

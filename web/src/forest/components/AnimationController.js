@@ -56,4 +56,4 @@ class AnimationController {
   }
 }
 
-export { AnimationController }; 
+export { AnimationController };

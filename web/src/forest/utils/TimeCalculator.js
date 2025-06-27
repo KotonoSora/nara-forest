@@ -63,4 +63,4 @@ class TimeCalculator {
   }
 }
 
-export { TimeCalculator }; 
+export { TimeCalculator };

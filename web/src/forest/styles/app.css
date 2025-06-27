@@ -15,7 +15,7 @@
   --flip-animation-easing-top: cubic-bezier(0.37, 0.01, 0.94, 0.35);
   --flip-animation-easing-bottom: cubic-bezier(0.15, 0.45, 0.28, 1);
   /* Zinc color palette based on Tailwind's zinc */
-  --zinc-50:  #fafafa;
+  --zinc-50: #fafafa;
   --zinc-100: #f4f4f5;
   --zinc-200: #e4e4e7;
   --zinc-300: #d4d4d8;
@@ -220,4 +220,4 @@ button {
   background: var(--zinc-700);
   color: var(--zinc-100);
   border: none;
-} 
+}

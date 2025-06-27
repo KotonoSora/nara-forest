@@ -81,4 +81,4 @@ class FlipCardTracker {
   }
 }
 
-export { FlipCardTracker }; 
+export { FlipCardTracker };

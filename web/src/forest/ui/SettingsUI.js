@@ -1,3 +1,5 @@
+import { getTimeFormatOptions } from "../utils/TimeFormats.js";
+
 export class SettingsUI {
   constructor(clock) {
     this.clock = clock;
@@ -19,14 +21,20 @@ export class SettingsUI {
   createClockFormatSection() {
     const formatSection = document.createElement("div");
     formatSection.className = "settings-section";
+
+    const timeFormatOptions = getTimeFormatOptions();
+    const optionsHtml = timeFormatOptions
+      .map(
+        (option) => `<option value="${option.value}">${option.label}</option>`,
+      )
+      .join("");
+
     formatSection.innerHTML = `
       <h3>Clock Display</h3>
       <div class="settings-row">
         <label class="settings-label">Time Format:</label>
         <select id="timeFormat" class="settings-select">
-          <option value="HH:MM:SS">Hours:Minutes:Seconds</option>
-          <option value="MM:SS">Minutes:Seconds</option>
-          <option value="SS">Seconds Only</option>
+          ${optionsHtml}
         </select>
       </div>
     `;
@@ -86,4 +94,4 @@ export class SettingsUI {
     `;
     return saveSection;
   }
-} 
+}
