@@ -49,7 +49,7 @@ export class SettingsUI {
       <div class="settings-row">
         <label class="settings-label">Show Labels:</label>
         <label class="settings-toggle">
-          <input type="checkbox" id="showLabels" checked>
+          <input type="checkbox" id="showLabels">
           <span class="toggle-slider"></span>
         </label>
       </div>

@@ -51,11 +51,13 @@ export class EventHandlers {
       document.getElementById("countdownMinutes")?.value,
     );
 
-    this.pendingLabelVisibility = showLabels;
-
     if (format) {
       this.applyTimeFormat(format);
     }
+
+    // Set showLabel in clock config and restart
+    this.clock.config.showLabel = showLabels;
+    this.clock.restart();
 
     if (timerMode === "countdown" && countdownMinutes && countdownMinutes > 0) {
       this.startCountdown(countdownMinutes);
@@ -69,13 +71,6 @@ export class EventHandlers {
   applyTimeFormat(format) {
     const timeUnits = getTimeUnits(format);
     this.clock.setTimeUnits(timeUnits);
-  }
-
-  applyLabelVisibility(showLabels) {
-    const labels = this.clock.el.querySelectorAll(".flip-clock__slot");
-    labels.forEach((label) => {
-      label.style.display = showLabels ? "block" : "none";
-    });
   }
 
   startCountdown(minutes) {

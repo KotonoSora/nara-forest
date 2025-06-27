@@ -16,6 +16,7 @@ class Clock extends EventEmitter {
       timeUnits: getTimeUnits("HH:MM"),
       format24Hour: true,
       theme: {},
+      showLabel: false,
       ...config,
     };
 
@@ -31,6 +32,7 @@ class Clock extends EventEmitter {
 
     this.renderer = new DOMRenderer({
       theme: this.config.theme,
+      showLabel: this.config.showLabel,
     });
 
     this.animationController = new AnimationController({

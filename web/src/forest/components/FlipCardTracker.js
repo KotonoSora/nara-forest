@@ -21,7 +21,7 @@ class FlipCardTracker {
           <b class="card__bottom"></b>
         </b>
       </b>
-      <span class="${this.config.slotClass}">${this.label}</span>
+      ${this.config.showLabel !== false ? `<span class="${this.config.slotClass}">${this.label}</span>` : ''}
     `;
 
     return element;

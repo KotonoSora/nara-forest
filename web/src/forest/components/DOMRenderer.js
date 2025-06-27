@@ -10,6 +10,7 @@ class DOMRenderer {
       cardClass: "flip-clock__card card",
       animationClass: "flip",
       theme: {},
+      showLabel: false,
       ...config,
     };
 

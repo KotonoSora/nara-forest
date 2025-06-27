@@ -57,6 +57,7 @@ bun.lockb
 !bun.lock
 .env
 .dev.vars
+.cursor
 
 # React Router
 /.react-router/
