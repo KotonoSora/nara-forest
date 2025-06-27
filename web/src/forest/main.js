@@ -2,11 +2,12 @@ import "./styles/app.css";
 import "./styles/settings.css";
 import "./styles/modal.css";
 import "./styles/buttons.css";
-import { Clock } from "./core/index.js";
-import { SettingsUI } from "./ui/index.js";
-import { EventHandlers } from "./handlers/index.js";
-import { Modal, TriggerButton } from "./ui/index.js";
-import { FullscreenButton } from "./ui/index.js";
+import { Clock } from "./core/Clock.js";
+import { SettingsUI } from "./ui/SettingsUI.js";
+import { EventHandlers } from "./handlers/EventHandlers.js";
+import { Modal } from "./ui/Modal.js";
+import { TriggerButton } from "./ui/TriggerButton.js";
+import { FullscreenButton } from "./ui/FullscreenButton.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Create clock with default settings

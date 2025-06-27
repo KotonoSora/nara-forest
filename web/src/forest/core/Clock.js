@@ -1,5 +1,7 @@
-import { EventEmitter, TimeCalculator } from '../utils/index.js';
-import { DOMRenderer, AnimationController } from '../components/index.js';
+import { EventEmitter } from '../utils/EventEmitter.js';
+import { TimeCalculator } from '../utils/TimeCalculator.js';
+import { DOMRenderer } from '../components/DOMRenderer.js';
+import { AnimationController } from '../components/AnimationController.js';
 
 // Main Clock class
 class Clock extends EventEmitter {
