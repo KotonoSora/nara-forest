@@ -40,7 +40,7 @@ jobs:
         with:
           path: |
             ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          key: ${{ runner.os }}-bun-${{ hashFiles('web/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
 
@@ -49,14 +49,13 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Open web folder
-        run: cd web
-
       - name: Install project dependencies
         run: bun install --frozen-lockfile
+        working-directory: web
 
       - name: Deploy to Cloudflare Pages
         run: bun run deploy
+        working-directory: web
 
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
