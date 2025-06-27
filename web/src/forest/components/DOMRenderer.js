@@ -56,15 +56,6 @@ class DOMRenderer {
     }
   }
 
-  removeTracker(label) {
-    const tracker = this.trackers.get(label);
-    if (tracker) {
-      tracker.destroy();
-      this.container.removeChild(tracker.element);
-      this.trackers.delete(label);
-    }
-  }
-
   clearTrackers() {
     this.trackers.forEach((tracker) => {
       tracker.destroy();

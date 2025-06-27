@@ -88,12 +88,8 @@ class Clock extends EventEmitter {
   }
 
   // Public API methods
-  get element() {
-    return this.renderer.container;
-  }
-
   get el() {
-    return this.element;
+    return this.renderer.container;
   }
 
   setCountdown(targetDate) {
@@ -113,14 +109,6 @@ class Clock extends EventEmitter {
   setUpdateInterval(interval) {
     this.config.updateInterval = interval;
     this.animationController.setUpdateInterval(interval);
-    return this;
-  }
-
-  setTheme(theme) {
-    this.config.theme = { ...this.config.theme, ...theme };
-    this.renderer.config.theme = this.config.theme;
-    this.renderer.applyTheme(this.renderer.container);
-    this.emit("themeChanged", this.config.theme);
     return this;
   }
 
