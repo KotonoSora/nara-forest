@@ -1,4 +1,4 @@
-import { cn } from "@kotonosora/ui/lib/utils";
+import { cn } from "cn";
 
 import { STATUS } from "../constants/common";
 import { useForestContext } from "../context/forest-context";
