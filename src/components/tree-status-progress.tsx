@@ -1,4 +1,4 @@
-import { cn } from "@kotonosora/ui/lib/utils";
+import { cn } from "cn";
 import { FlameKindling, Shrub, Sprout, TreePine, Trees } from "lucide-react";
 
 import type { TreeStatusProgressProps } from "../types/common";

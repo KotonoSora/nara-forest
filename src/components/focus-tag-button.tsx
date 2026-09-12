@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@kotonosora/ui/components/ui/popover";
-import { cn } from "@kotonosora/ui/lib/utils";
+import { cn } from "cn";
 import { Pencil } from "lucide-react";
 
 import { LIMIT_LABEL_TAGS_CHARACTERS, TAG_COLORS } from "../constants/common";
